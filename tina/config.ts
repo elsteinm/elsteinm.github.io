@@ -45,6 +45,13 @@ export default defineConfig({
 					},
 					{
 						type: 'string',
+						name: 'title',
+						label: 'Title',
+						isTitle: true,
+						required: true
+					},
+					{
+						type: 'string',
 						label: 'description',
 						required: true,
 						name: 'description',
@@ -72,13 +79,6 @@ export default defineConfig({
 						ui: {
 							component: 'tags'
 						}
-					},
-					{
-						type: 'string',
-						name: 'title',
-						label: 'Title',
-						isTitle: true,
-						required: true
 					},
 					{
 						type: 'rich-text',
