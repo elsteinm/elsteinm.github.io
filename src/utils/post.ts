@@ -2,20 +2,31 @@ import { getCollection } from 'astro:content'
 import { CATEGORIES } from '@/data/categories'
 
 export const getCategories = async () => {
-	const posts = await getCollection('blog')
-	const categories = new Set(
-		posts.filter((post) => !post.data.draft).map((post) => post.data.category)
-	)
-	return Array.from(categories).sort((a, b) =>
-		CATEGORIES.indexOf(a) < CATEGORIES.indexOf(b) ? -1 : 1
-	)
+	return getCollection('blog')
+		.then((posts) => {
+			const categories = new Set(
+				posts.filter((post) => !post.data.draft).map((post) => post.data.category)
+			)
+			return Array.from(categories).sort((a, b) =>
+				CATEGORIES.indexOf(a) < CATEGORIES.indexOf(b) ? -1 : 1
+			)
+		})
+		.catch((err) => {
+			return []
+		})
 }
 
 export const getPosts = async (max?: number) => {
-	return (await getCollection('blog'))
-		.filter((post) => !post.data.draft)
-		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-		.slice(0, max)
+	return getCollection('blog')
+		.then((posts) => {
+			return posts
+				.filter((post) => !post.data.draft)
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+				.slice(0, max)
+		})
+		.catch((err) => {
+			return []
+		})
 }
 
 export const getTags = async () => {
